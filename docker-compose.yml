@@ -1,0 +1,31 @@
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: gazette
+      POSTGRES_USER: gazette
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_only_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gazette -d gazette"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      RSS_URL: ${RSS_URL:-https://www.francetvinfo.fr/titres.rss}
+      DATABASE_URL: postgresql://gazette:${POSTGRES_PASSWORD:-dev_only_password}@db:5432/gazette
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

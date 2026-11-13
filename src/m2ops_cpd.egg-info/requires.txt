@@ -1,0 +1,7 @@
+feedparser<7,>=6.0
+requests<3,>=2.32
+psycopg[binary]<4,>=3.2
+
+[dev]
+pytest<10,>=8
+ruff<1,>=0.9
