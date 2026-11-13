@@ -1,8 +1,13 @@
-.env
-.venv/
+# Python
 __pycache__/
+*.py[cod]
+*.egg-info/
 .pytest_cache/
 .ruff_cache/
-*.pyc
-.DS_Store
+.venv/
+
+# Données générées
 data/*.json
+
+# Secrets
+.env
